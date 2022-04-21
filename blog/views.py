@@ -13,6 +13,18 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP
 
 from .models import Post, Comment
 from .forms import PostModelForm, PostForm, CommentModelForm
+from django.contrib.auth.models import User
+
+def register_user(request):
+    if(request.method == 'POST'): 
+        new_user=User.objects.create_user(
+            username=request.POST['name'],
+            password=request.POST['pass'],
+            email = request.POST['email']
+        )
+        new_user.save()
+        return redirect('post_list_home')
+    return render(request, 'registration/register.html')
 
 # 댓글승인
 @login_required
